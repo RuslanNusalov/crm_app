@@ -1,2 +1,4 @@
 task.db
 __pycache__/
+.direnv
+.DS_Store

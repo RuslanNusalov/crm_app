@@ -1,0 +1,6 @@
+poetry.lock
+pyproject.toml
+Dockerfile
+tasks.db
+.direnv
+.DS_Store
