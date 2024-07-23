@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from schemas import STask, STaskAdd, STaskId
+from schemas import SNote, SNoteAdd, SNoteId
 from typing import Annotated
 from repository import TaskRepository
 
@@ -12,14 +12,14 @@ router = APIRouter(
 
 @router.post("")
 async def add_task(
-        task: Annotated[STaskAdd, Depends()],
+        task: Annotated[SNoteAdd, Depends()],
 
-) -> STaskId:   
+) -> SNoteId:   
     task_id = await TaskRepository.add_one(task)
     return {"ok": True, "task_id": task_id}
 
 
 @router.get("")
-async def get_tasks() -> list[STask]:
+async def get_tasks() -> list[SNote]:
     tasks = await TaskRepository.find_all()
     return tasks
