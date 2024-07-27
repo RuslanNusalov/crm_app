@@ -1,7 +1,7 @@
 import datetime
 from typing import List
-from fastapi import FastAPI, Request, status
-from pydantic import BaseModel, Field
+from fastapi import FastAPI
+from pydantic import BaseModel, EmailStr
 from sqlalchemy import TIMESTAMP
 
 
@@ -26,13 +26,14 @@ class Client(BaseModel):
     id: int
     name: str
     phone: str
-    email: str
+    email: EmailStr
     city: str
     region: str
+    address: str
     create_on: TIMESTAMP
     updated_on: datetime
-    #parent_user_id: юит
-    active_bool: bool
+    parent_user_id: int
+    is_active: bool
 
 
 @app.get("/clients/{client_id}", response_model=List[Client])
