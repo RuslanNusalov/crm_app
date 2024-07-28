@@ -1,5 +1,6 @@
 import datetime
 from typing import List
+import uuid
 from fastapi import FastAPI
 from pydantic import BaseModel, EmailStr
 from sqlalchemy import TIMESTAMP
@@ -23,7 +24,7 @@ app = FastAPI(
 
 
 class Client(BaseModel):
-    id: int
+    id: uuid
     name: str
     phone: str
     email: EmailStr
@@ -53,7 +54,7 @@ def get_notes(limit: int = 10, offset: int = 0):
 
 
 class Note(BaseModel):
-    id: int
+    id: uuid
     client_id: int
     text: str
 
