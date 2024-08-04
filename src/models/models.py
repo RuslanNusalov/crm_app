@@ -27,7 +27,7 @@ clients = Table(
     Column("create_on", TIMESTAMP, default=datetime.utcnow),
     Column("updated_on", DateTime(), default=datetime.now, onupdate=datetime.now),
     Column("parent_user_id", Integer),
-    # Column("is_active", bool),
+    Column("is_active", bool),
 )
     
 
