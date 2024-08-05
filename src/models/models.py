@@ -24,10 +24,10 @@ clients = Table(
     Column("city", String),
     Column("region", String),
     Column("address", String),
-    Column("create_on", TIMESTAMP, default=datetime.utcnow),
-    Column("updated_on", DateTime(), default=datetime.now, onupdate=datetime.now),
+    Column("create_on", TIMESTAMP, default=datetime.UTC),
+    Column("updated_on", DateTime(), default=datetime.datetime.now, onupdate=datetime.date.today),
     Column("parent_user_id", Integer),
-    Column("is_active", bool),
+    # Column("is_active", bool),
 )
     
 
