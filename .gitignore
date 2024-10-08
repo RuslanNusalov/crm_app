@@ -5,3 +5,8 @@ __pycache__/
 venv
 .env
 .envrc
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover 

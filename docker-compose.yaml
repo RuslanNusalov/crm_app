@@ -1,17 +1,41 @@
 version: "3.9"
 services:
-  postgres:
-    image: postgres:14.8-alpine3.18
+  web:
+    build: .
     environment:
-      POSTGRES_DB: "postgres"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      SQLALCHEMY_DATABASE_URL: 'postgresql+psycopg2://postgres:postgres@db:5433/postgres'
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d
-      - habrdb-data:/var/lib/postgresql/data
+      - crm_app_app:/home/app
     ports:
-      - "5432:5432"
+      - "8000:8000"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:15.4
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'postgres'
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    volumes:
+      - ".postgres-data:/var/lib/postgresql/data"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+  alembic:
+    build: .
+    environment:
+      SQLALCHEMY_DATABASE_URL: 'postgresql+psycopg2://postgres:postgres@db:5432/postgres'
+    command: alembic upgrade head
+
+
 
 volumes:
-  habrdb-data:
+  crm_app:
