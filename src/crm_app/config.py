@@ -1,16 +1,4 @@
-# from dotenv import load_dotenv
-# import os
-
-# load_dotenv()
-
-# DB_HOST = os.environ.get("DB_HOST")
-# DB_PORT = os.environ.get("DB_PORT")
-# DB_NAME = os.environ.get("DB_NAME")
-# DB_USER = os.environ.get("DB_USER")
-# DB_PASS = os.environ.get("DB_PASS")
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
 
 class Settings(BaseSettings):
     DB_HOST: str
@@ -20,10 +8,11 @@ class Settings(BaseSettings):
     DB_PASS: str
 
     @property
-    def DATABASE_URL_asyncpg(self):
-        # postgresql+psycopg2://postgres:postgres@localhost:5432/crm_app
+    def DATABASE_URL_asyncpg(self) -> str:
+        """Возвращает URL подключения к базе данных для asyncpg."""
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
     
     model_config = SettingsConfigDict(env_file=".env")
 
+# Инициализация настроек из файла окружения
 settings = Settings()

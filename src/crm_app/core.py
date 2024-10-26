@@ -37,13 +37,13 @@ async def insert_data(name, phone, email, city, region, address):
         return None
         
 
-async def select_data():
+async def select_clients():
     try:
         async with async_engine.connect() as conn:
             sql = text("SELECT * FROM clients;")
             res = await conn.execute(sql)
-            p1 = res.mappings().first()
-            return p1
+            clients = res.fetchall()
+            return clients
     except Exception as e:
         print(f"Error occurred: {e}")
         return None
@@ -56,6 +56,60 @@ async def select_client(client_id: str):
             res = await conn.execute(text(sql), {"client_id": client_id})
             p1 = res.fetchone()  # Получение первой записи как словаря
             return p1
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return None
+    
+
+async def insert_note(note, client_id):
+    try:
+        async with async_engine.connect() as conn:
+            async with conn.begin():
+                idnumb = str(uuid.uuid4())
+                sql = """INSERT INTO notes (id, note, client_id) VALUES (:id, :note, :client_id) returning *;"""
+                res = await conn.execute(text(sql), {
+                    'id': idnumb,
+                    'note': note,
+                    'client_id': client_id,
+                })
+                p1 = res.fetchone()
+                return p1
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return None
+
+
+async def select_notes():
+    try:
+        async with async_engine.connect() as conn:
+            sql = "SELECT * FROM notes;"
+            res = await conn.execute(text(sql))
+            notes = res.fetchall()
+            return notes
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return None
+    
+
+async def select_note(note_id: str):
+    try:
+        async with async_engine.connect() as conn:
+            sql = """SELECT * FROM notes WHERE notes.id = :note_id"""
+            res = await conn.execute(text(sql), {"note_id": note_id})
+            p1 = res.fetchone()  # Получение первой записи как словаря
+            return p1
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return None
+    
+
+async def select_clients_notes(client_id: str):
+    try:
+        async with async_engine.connect() as conn:
+            sql = """SELECT * FROM notes WHERE notes.client_id = :client_id"""
+            res = await conn.execute(text(sql), {"client_id": client_id})
+            notes = res.fetchall()  # Получение первой записи как словаря
+            return notes
     except Exception as e:
         print(f"Error occurred: {e}")
         return None
