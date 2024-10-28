@@ -1,6 +1,6 @@
 import uuid
 from fastapi.testclient import TestClient
-from crm_app.main import app
+from src.crm_app.main import app
 
 
 # Инициализация клиента для тестирования FastAPI
