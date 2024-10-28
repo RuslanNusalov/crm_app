@@ -1,8 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import AsyncMock
-from crm_app.main import app
-
+from src.crm_app.main import app, create_client
 
 
 client = TestClient(app)
@@ -19,8 +18,8 @@ async def test_create_client(mocker):
         "address": "Test Address"
     }
     
-    # Мокаем insert_data, чтобы не обращаться к настоящей БД
-    mock_insert = mocker.patch('crm_app.core.insert_data', new=AsyncMock(return_value=client_data))
+    # Мокаем create_client, чтобы не обращаться к настоящей БД
+    mock_insert = mocker.patch('crm_app.main.create_client', new=AsyncMock(return_value=client_data))
     
     # Выполняем POST запрос к эндпоинту
     response = await client.post("/clients", json=client_data)

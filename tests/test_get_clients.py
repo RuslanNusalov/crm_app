@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import AsyncMock
-from crm_app.main import app
+from src.crm_app.main import app
 
 
 # Подключаем TestClient для взаимодействия с FastAPI
