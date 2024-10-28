@@ -69,7 +69,7 @@ async def get_client(client_id: str) -> Client:
         raise HTTPException(status_code=404, detail="Client not found")
     return client
 
-
+# Endpoint to select client's notes.
 @app.get("/client-notes/{client_id}", response_model=List[Note])
 async def get_client_notes(client_id: str) -> Note:
     notes = await select_clients_notes(client_id)
