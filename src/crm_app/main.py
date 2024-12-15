@@ -39,6 +39,16 @@ class Note(NoteCreate):
     client_id: uuid.UUID | None
 
 
+class NotificationCreate(BaseModel):
+    note: str
+    
+
+class Notification(NoteCreate):
+    '''Describes the notes model used in the CRM.'''
+    id: uuid.UUID
+    client_id: uuid.UUID | None
+
+
 @app.get("/")
 async def root():
     return {"message": "CRM App"}
@@ -103,3 +113,11 @@ async def get_note(note_id: str) -> Note:
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
     return note
+
+
+# Endpoint to add a new notification.
+@app.post("/notifications", response_model=NotificationCreate)
+async def create_notification(note: NotificationCreate, client_id: str) -> Note:
+    notification_data = note.model_dump()  # Преобразуем объект note в словарь
+    new_notification = await insert_note(**notification_data, client_id=client_id)  # Передаем словарь и client_id
+    return new_notification

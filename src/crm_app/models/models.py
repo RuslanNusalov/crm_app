@@ -27,3 +27,13 @@ clients = Table(
     Column("updated_on", TIMESTAMP(timezone=True)),
     # Column("is_active", bool),
 )
+
+notifications = Table(
+    "notifications",
+    metadata,
+    Column("id", UUID, primary_key=True),
+    Column("notification", String),
+    Column("date", TIMESTAMP(timezone=True)),
+    Column("client_id", UUID, ForeignKey("clients.id", ondelete='CASCADE')),
+    Column("create_on", TIMESTAMP(timezone=True)),
+)

@@ -3,7 +3,7 @@ from crm_app.config import settings
 
 
 async_engine = create_async_engine(
-    url=settings.DATABASE_URL_asyncpg,
+    url=settings.DATABASE_URL_ASYNCPG,
     echo=True,
     pool_size=5,
     max_overflow=10,
